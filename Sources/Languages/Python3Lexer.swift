@@ -8,6 +8,7 @@
 //
 
 import Foundation
+import SavannaKit
 
 public class Python3Lexer: SourceCodeRegexLexer {
 	
@@ -30,10 +31,11 @@ public class Python3Lexer: SourceCodeRegexLexer {
 		generators.append(keywordGenerator(keywords, tokenType: .keyword))
 		
 		// Line comment
-        generators.append(regexGenerator("#(.*)", tokenType: .comment))
+		generators.append(regexGenerator("#(.*)", tokenType: .comment))
 		
 		// Block comment or multi-line string literal
-		generators.append(regexGenerator("(\"\"\".*\"\"\")|(\'\'\'.*\'\'\')", options: [.dotMatchesLineSeparators], tokenType: .comment))
+		generators.append(regexGenerator("(\"\"\")(.*?)(\"\"\")", options: [.dotMatchesLineSeparators], tokenType: .string))
+		generators.append(regexGenerator("(\'\'\')(.*?)(\'\'\')", options: [.dotMatchesLineSeparators], tokenType: .string))
 
 		// Single-line string literal
 		generators.append(regexGenerator("('.*')|(\".*\")", tokenType: .string))
